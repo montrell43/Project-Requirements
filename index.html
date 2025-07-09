@@ -5,9 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cup Designer App</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 </head>
 <body>
-    
-    <script src="main.js"></script>
+    <h1>Cup Designer</h1>
+
+    <div class="designer-container">
+        <div class="cup" id="cup">
+            <div class="handle"></div>
+            <p id="cupText">Your Text Here</p>
+        </div>
+
+        <div class="controls">
+            <label for="colorPicker">Choose Cup Color:</label>
+            <input type="color" id="colorPicker">
+
+            <label for="textInput">Add Custom Text:</label>
+            <input type="text" id="textInput" placeholder="Input your message">
+        </div>
+
+        <label>Add Stickers</label>
+        <div id="stickerContainer">
+            <button class="sticker"><i class ="fas fa-mug-hot"></i></button>
+            <button class="sticker"><i class ="fas fa-star"></i></button>
+            <button class="sticker"><i class ="fas fa-heart"></i></button>
+            <button class="sticker"><i class ="fas fa-smile-wink"></i></button>
+        </div>
+
+        <h2>SelectA Real Cup Image</h2>
+        <div id="imageResults" class="image-grid"></div>
+    </div>
+    <script src="script.js"></script>
+    <script src="apiKey.js"></script>
 </body>
 </html>
