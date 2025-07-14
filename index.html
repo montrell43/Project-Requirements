@@ -11,21 +11,30 @@
 </head>
 <body>
     <h1>Cup Designer</h1>
-
-    <div class="designer-container">
+        <!-- the handle design -->
+    <!-- <div class="designer-container">
         <div class="cup" id="cup">
             <div class="handle"></div>
             <p id="cupText">Your Text Here</p>
-        </div>
+        </div> -->
 
+        <div class="cup-container" id="cup">
+            <img src="images/white-mug.png" alt="Glass" id="glassImage">
+            <div class="overlay" id="overlay"></div>
+            <div class="sticker-layer" id="stickerLayer"></div>
+            <p id="cupText">Your Text</p>
+        </div>
+        <!-- Controls for inputs to add and reset to and from cup -->
         <div class="controls">
-            <label for="colorPicker">Choose Cup Color:</label>
+            <label for="colorPicker">Overlay Color:</label>
             <input type="color" id="colorPicker">
 
             <label for="textInput">Add Custom Text:</label>
             <input type="text" id="textInput" placeholder="Input your message">
+            <button id="resetButton">Reset Cup</button>
         </div>
 
+        <!-- for stickers -->
         <label>Add Stickers</label>
         <div id="stickerContainer">
             <button class="sticker"><i class ="fas fa-mug-hot"></i></button>
@@ -33,11 +42,16 @@
             <button class="sticker"><i class ="fas fa-heart"></i></button>
             <button class="sticker"><i class ="fas fa-smile-wink"></i></button>
         </div>
-
-        <h2>SelectA Real Cup Image</h2>
-        <div id="imageResults" class="image-grid"></div>
     </div>
-    <script src="script.js"></script>
+        <!-- the handling for the images input and selectors -->
+            <h2>SelectA Real Cup Image</h2>
+            <label for="searchInput">Search Cups & Glasses</label>
+            <input type="text" id="searchInput" placeholder="wine glass, tumblers, mug etc..">
+            <div id="imageResults" class="image-grid"></div>
+
+            <button id="swapCup">Swap To Cup</button>
+            <button id="swapGlass">Swap To Glass</button>
     <script src="apiKey.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

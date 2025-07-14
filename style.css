@@ -9,12 +9,49 @@ h1 {
     margin-bottom: 20px;
 }
 
-.designer-container {
+/* .designer-container {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     gap: 50px;
     margin-top: 30px;
+} */
+
+.cup-container {
+    position: relative;
+    width: 200px;
+    height: 300px;
+    /* margin: 0; */
+    border-radius: 0 0 100px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.cup-container i {
+    position: absolute;
+    font-size: 30px;
+    cursor: grab;
+    /* z-index: 3; */
+}
+
+.overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        opacity: 0.4;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+#glassImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
 }
 
 .cup {
@@ -29,26 +66,35 @@ h1 {
     box-shadow: inset 0 -10px 15px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.3);
     background-image: linear-gradient(to bottom, #fff2cc, #ffcc00);
     transition: background-color 0.3s;
-    overflow: hidden;
+    overflow: visible;
 }
 
-.handle {
+/* .handle {
     position: absolute;
     top: 60px;
-    right: -50px;
-    width: 60px;
+    right: -30px;
+    width: 40px;
     height: 120px;
-    border: 10px solid#ffcc00;
-    border-radius: 50%;
+    border: 12px solid#ffcc00;
+    border-radius: 100px / 180px;
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-}
+    border-left-color: transparent;
+     border-bottom-color: transparent; 
+     background-color: transparent;
+    box-shadow: inset 2px 0 6px rgba(0,0,0,0.3);;
+    z-index: 5; 
+} */
 
 #cupText {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    text-align: center;
     font-weight: bold;
     font-size: 18px;
     user-select: none;
     pointer-events: none;
-    z-index: 10;
+    z-index: 2;
     color: #333;
     text-shadow: 0 0 3px white;
 }
@@ -84,6 +130,23 @@ h1 {
 background-color: #ddd;
 }
 
+.sticker-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.sticker-layer i {
+    position: absolute;
+    font-size: 30px;
+    cursor: grab;
+    pointer-events: all;
+}
+
 .image-grid {
     display: flex;
     flex-wrap: wrap;
@@ -92,7 +155,7 @@ background-color: #ddd;
     margin: 20px;
 }
 
-.image-grid {
+.image-grid img {
    width: 150px;
    height: 150px;
    object-fit: cover;
@@ -104,4 +167,27 @@ background-color: #ddd;
 .image-grid img:hover {
     transform: scale(1.05);
 }
+
+#searchInput {
+    width: 300px;
+    padding: 8px 12px;
+    font-size: 16;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1.5px solid #ccc;
+    transition:  border-color 0.3s ease;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: #ffcc00;
+    box-shadow: 0 0 5px #ffcc00;
+}
+
+#searchInput:hover {
+    background-color: #eee;
+   transform: scale(1.2);
+   transition: transform 0.2s;
+}
+
 

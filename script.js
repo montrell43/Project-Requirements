@@ -1,7 +1,7 @@
 
 console.log("Taurus")
 // Accesaa Key hidden using .gitignore
-const access = key
+const access = UNSPLASH_ACCESS_KEY;
 // This will be the cup and color picker
 const cup = document.getElementById("cup");
 const colorPicker = document.getElementById("colorPicker");
@@ -10,17 +10,36 @@ const colorPicker = document.getElementById("colorPicker");
 const cupText = document.getElementById("cupText");
 const textInput = document.getElementById("textInput");
 
-const stickersButtons = document.querySelectorAll('.sticker')
+const stickersButtons = document.querySelectorAll('.sticker');
+const stickerLayer = document.getElementById("stickerLayer");
+
+const searchInput = document.getElementById("searchInput");
+
+const resetButton = document.getElementById("resetButton");
+
+const glassImage = document.getElementById("glassImage");
+
+const overlay = document.getElementById("overlay");
+const imageContainer = document.getElementById("imageResults")
+const swapCup = document.getElementById("swapCup");
+const swapGlass = document.getElementById("swapGlass");
+
+
+// Sets the overlay for the colors
+//const overlay = document.createElement("div");
+// overlay.className = "overlay";
+// cup.appendChild(overlay);
 
 // Able to change the background color when user selects a new color
 colorPicker.addEventListener('input', () => {
-    cup.style.backgroundColor = colorPicker.value
+    overlay.style.backgroundColor = colorPicker.value;
 });
 
 // Able to update what the text on cup would be
 textInput.addEventListener('input', () => {
-    cupText.textContent = textInput.value;
+    cupText.textContent = textInput.value || "Your Text Here";
 });
+
 
 // Able to place stickers on cup
 stickersButtons.forEach(button => {
@@ -35,40 +54,115 @@ stickersButtons.forEach(button => {
         icon.style.position = "absolute";
 
         // Making an random position inside the cup
-        icon.style.top = `${Math.random() * 80 + 10}%`
-        icon.style.left = `${Math.random() * 80 + 10}%`
+        icon.style.top = "40%";
+        icon.style.left = "40%";
+        icon.style.cursor = "grab";
+        icon.style.zIndex = 10;
 
-        // Adding new icon to the cup
-        cup.appendChild(icon);
+         // Adding new icon to the cup
+        stickerLayer.appendChild(icon);
+
+        // Adds the grab and dragging functionality to cursor pointer
+        icon.addEventListener('mousedown', (event) => {
+            event.preventDefault();
+
+            // This tells where the cup is sitting on the screen
+            const cupRect = cup.getBoundingClientRect();
+
+            // Once mouse is clicked absolute on the screen with clientX and clientY
+            // icon.getBoundingClientRect allows me to know where is the sticker on the screen
+            // shiftX and shiftY is to prevent the sticker from jumping to it's original placing to top-left of screen when I drag and shows how far inside the the sticker the mouse has clicked
+            const shiftX = event.clientX - icon.getBoundingClientRect().left;
+            const shiftY = event.clientY - icon.getBoundingClientRect().top;
+
+
+            // this function allows the mouseAt to calculate where to place the sticker that it follows the mouse  and moves X relative to cup   
+            function moveAt(pageX, pageY) {
+                icon.style.left = `${pageX - cupRect.left - shiftX}px`;
+                icon.style.top = `${pageY - cupRect.top - shiftY}px`;
+            }
+
+            function onMouseMove() {
+                moveAt(event.pageX, event.pageY);
+            }
+
+            // the addEventListener mousemove updates the position
+            document.addEventListener("mousemove", onMouseMove);
+
+            // the addEventListener mouseup stops the dragging point of the sticker upon mouse
+            document.addEventListener("mouseup", () => {
+                document.removeEventListener('mousemove', onMouseMove);
+            }, { once: true});
+        });
+
     })
 });
 
 function displayImages(images) {
-    const imageContainer = document.getElementById("imageRsults");
-    imageContainer.innerHTML = '' // Helps clear last images
+    //const imageContainer = document.getElementById("imageResults");
+    imageContainer.innerHTML = ''; // Helps clear last images
+
+    if(images.length === 0) {
+        imageContainer.textContent = "No images found. Try a different search";
+        return;
+    }
 
     images.forEach(img => {
-        const imgElement = document.createElement('img')
+        const imgElement = document.createElement('img');
         imgElement.src = img.urls.small;
+        imgElement.alt = img.alt_description;
         imgElement.style.cursor = 'pointer';
 
         imgElement.addEventListener("click", () => {
-            cup.style.backgroundImage = `url(${img.urls.small})`;
-            cup.style.backgroundSize = 'cover';
-            cup.style.backgroundPosition = 'center';
+
+            glassImage.src = img.urls.small; // replaces the glasses
+            overlay.style.backgroundColor = "transparent"; // removes overlay on real glasses
         });
         imageContainer.appendChild(imgElement);
     })
 }
 
-function fetchCupImages() {
-    fetch(`https://api.unsplash.com/search/photos?query=coffee cup&per_page=6&client_id=${access}`)
+
+function fetchCupImages(query = 'coffee cup') { // This lines allow the query to be accepted
+    fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=6&client_id=${access}`)
     .then(response => response.json())
-    .then(data => {
-        displayImages(data.results)
-    })
-    .catch(error => {
-        console.error("Error fetch images:", error)
-    })
+    .then(data =>  displayImages(data.results))
+    .catch(error => console.error("Error fetching images:", error))
 }
 fetchCupImages();
+
+// This listens for enter key to trigger search
+searchInput.addEventListener('keypress', (event) => {
+    if(event.key === "Enter") {
+        const query = searchInput.value.trim();
+        if(query.length > 0) {
+            fetchCupImages(query);
+            searchInput.value = ""; // clears input after clicking
+        }
+    }
+});
+
+resetButton.addEventListener("click", () => {
+    // Once clicked Resets background-color and images
+    glassImage.src = "images/white-mug.png";
+    overlay.style.backgroundColor = "transparent";
+
+    // Once clicked resets the cup's text
+    cupText.textContent = "Your text";
+    textInput.value = "";
+
+    // Once clicked removes all stickers in the <i> tags that goes on the cup
+    const stickers = cup.querySelectorAll("i");
+    stickers.forEach(sticker => sticker.remove());
+});
+
+// Swap buttons
+swapCup.addEventListener("click", () => {
+    glassImage.src = "images/white-mug.png";
+    overlay.style.backgroundColor = "transparent";
+});
+
+swapGlass.addEventListener("click", () => {
+    glassImage.src = "images/black-mug.png";
+    overlay.style.backgroundColor = "transparent";
+});
