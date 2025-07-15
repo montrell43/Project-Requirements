@@ -57,6 +57,7 @@ stickersButtons.forEach(button => {
         icon.style.top = "40%";
         icon.style.left = "40%";
         icon.style.cursor = "grab";
+        //icon.style.transform = "translate(-50%, -50%)";
         icon.style.zIndex = 10;
 
          // Adding new icon to the cup
@@ -68,12 +69,12 @@ stickersButtons.forEach(button => {
 
             // This tells where the cup is sitting on the screen
             const cupRect = cup.getBoundingClientRect();
-
+            const iconRect = icon.getBoundingClientRect();
             // Once mouse is clicked absolute on the screen with clientX and clientY
             // icon.getBoundingClientRect allows me to know where is the sticker on the screen
             // shiftX and shiftY is to prevent the sticker from jumping to it's original placing to top-left of screen when I drag and shows how far inside the the sticker the mouse has clicked
-            const shiftX = event.clientX - icon.getBoundingClientRect().left;
-            const shiftY = event.clientY - icon.getBoundingClientRect().top;
+            const shiftX = event.clientX - iconRect.left;
+            const shiftY = event.clientY - iconRect.top;
 
 
             // this function allows the mouseAt to calculate where to place the sticker that it follows the mouse  and moves X relative to cup   
@@ -115,8 +116,12 @@ function displayImages(images) {
 
         imgElement.addEventListener("click", () => {
 
-            glassImage.src = img.urls.small; // replaces the glasses
+            overlay.style.backgroundImage = `url(${img.urls.small})`; // replaces the glasses images to wrap the image around the selected glass
+            overlay.style.backgroundSize = "cover"; // covers the glass fully
+            overlay.style.backgroundRepeat = "no-repeat"; // to make sure the images do not show multiple same images
+            overlay.style.backgroundPosition = "center"; // center the images presented
             overlay.style.backgroundColor = "transparent"; // removes overlay on real glasses
+            glassImage.src = "images/white-mug.png";
         });
         imageContainer.appendChild(imgElement);
     })
@@ -146,6 +151,7 @@ resetButton.addEventListener("click", () => {
     // Once clicked Resets background-color and images
     glassImage.src = "images/white-mug.png";
     overlay.style.backgroundColor = "transparent";
+    overlay.style.backgroundImage = "none"
 
     // Once clicked resets the cup's text
     cupText.textContent = "Your text";
@@ -154,6 +160,8 @@ resetButton.addEventListener("click", () => {
     // Once clicked removes all stickers in the <i> tags that goes on the cup
     const stickers = cup.querySelectorAll("i");
     stickers.forEach(sticker => sticker.remove());
+
+
 });
 
 // Swap buttons
