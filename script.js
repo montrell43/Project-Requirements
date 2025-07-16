@@ -20,9 +20,11 @@ const resetButton = document.getElementById("resetButton");
 const glassImage = document.getElementById("glassImage");
 
 const overlay = document.getElementById("overlay");
-const imageContainer = document.getElementById("imageResults")
-const swapCup = document.getElementById("swapCup");
-const swapGlass = document.getElementById("swapGlass");
+const imageContainer = document.getElementById("imageResults");
+const prevCupButton = document.getElementById("prevCup");
+const nextCupButton = document.getElementById("nextCup");
+//const swapCup = document.getElementById("swapCup");
+//const swapGlass = document.getElementById("swapGlass");
 
 
 // Sets the overlay for the colors
@@ -83,7 +85,7 @@ stickersButtons.forEach(button => {
                 icon.style.top = `${pageY - cupRect.top - shiftY}px`;
             }
 
-            function onMouseMove() {
+            function onMouseMove(event) {
                 moveAt(event.pageX, event.pageY);
             }
 
@@ -98,6 +100,93 @@ stickersButtons.forEach(button => {
 
     })
 });
+
+// Able to place text on cup/glasses
+
+        // Adds the grab and dragging functionality to cursor pointer
+        cupText.addEventListener('mousedown', (event) => {
+            event.preventDefault();
+
+            // This tells where the cup is sitting on the screen
+            const cupRect = cup.getBoundingClientRect();
+            const iconRect = icon.getBoundingClientRect();
+            // Once mouse is clicked absolute on the screen with clientX and clientY
+            // icon.getBoundingClientRect allows me to know where is the sticker on the screen
+            // shiftX and shiftY is to prevent the sticker from jumping to it's original placing to top-left of screen when I drag and shows how far inside the the sticker the mouse has clicked
+            const shiftX = event.clientX - iconRect.left;
+            const shiftY = event.clientY - iconRect.top;
+
+
+            // this function allows the mouseAt to calculate where to place the sticker that it follows the mouse  and moves X relative to cup   
+            function moveAt(pageX, pageY) {
+                icon.style.left = `${pageX - cupRect.left - shiftX}px`;
+                icon.style.top = `${pageY - cupRect.top - shiftY}px`;
+            }
+
+            function onMouseMove(event) {
+                moveAt(event.pageX, event.pageY);
+            }
+
+            // the addEventListener mousemove updates the position
+            document.addEventListener("mousemove", onMouseMove);
+
+            // the addEventListener mouseup stops the dragging point of the sticker upon mouse
+            document.addEventListener("mouseup", () => {
+                document.removeEventListener('mousemove', onMouseMove);
+            }, { once: true});
+        });
+
+
+// Able to place images where want to on cup
+imgElement.addEventListener("click", () => {
+// creating an new <img> element and add it to stickerLayer
+        const image = document.createElement('img');
+        image.src = img.urls.small;
+        image.className = "draggable-image";
+        image.style.position = "absolute";
+
+        // Making an random position inside the cup
+        image.style.top = "40%";
+        image.style.left = "40%";
+        image.style.cursor = "grab";
+         // Adding new image to the cup
+        stickerLayer.appendChild(image);
+
+        // Adds the grab and dragging functionality to cursor pointer
+        image.addEventListener('mousedown', (event) => {
+            event.preventDefault();
+
+            // This tells where the cup is sitting on the screen
+            const cupRect = cup.getBoundingClientRect();
+            const imageRect = image.getBoundingClientRect();
+            // Once mouse is clicked absolute on the screen with clientX and clientY
+            // image.getBoundingClientRect allows me to know where is the sticker on the screen
+            // shiftX and shiftY is to prevent the sticker from jumping to it's original placing to top-left of screen when I drag and shows how far inside the the sticker the mouse has clicked
+            const shiftX = event.clientX - imageRect.left;
+            const shiftY = event.clientY - imageRect.top;
+
+
+            // this function allows the mouseAt to calculate where to place the sticker that it follows the mouse  and moves X relative to cup   
+            function moveAt(pageX, pageY) {
+                image.style.left = `${pageX - cupRect.left - shiftX}px`;
+                image.style.top = `${pageY - cupRect.top - shiftY}px`;
+            }
+
+            function onMouseMove(event) {
+                moveAt(event.pageX, event.pageY);
+            }
+
+            // the addEventListener mousemove updates the position
+            document.addEventListener("mousemove", onMouseMove);
+
+            // the addEventListener mouseup stops the dragging point of the sticker upon mouse
+            document.addEventListener("mouseup", () => {
+                document.removeEventListener('mousemove', onMouseMove);
+            }, { once: true});
+        });
+
+    })
+
 
 function displayImages(images) {
     //const imageContainer = document.getElementById("imageResults");
@@ -117,11 +206,11 @@ function displayImages(images) {
         imgElement.addEventListener("click", () => {
 
             overlay.style.backgroundImage = `url(${img.urls.small})`; // replaces the glasses images to wrap the image around the selected glass
-            overlay.style.backgroundSize = "cover"; // covers the glass fully
+            overlay.style.backgroundSize = "45% auto"; // covers the glass fully
             overlay.style.backgroundRepeat = "no-repeat"; // to make sure the images do not show multiple same images
-            overlay.style.backgroundPosition = "center"; // center the images presented
-            overlay.style.backgroundColor = "transparent"; // removes overlay on real glasses
-            glassImage.src = "images/white-mug.png";
+            overlay.style.backgroundPosition = "center center"; // center the images presented
+            //overlay.style.backgroundColor = "transparent"; // removes overlay on real glasses
+            //glassImage.src = "images/white-mug.png";
         });
         imageContainer.appendChild(imgElement);
     })
@@ -149,8 +238,8 @@ searchInput.addEventListener('keypress', (event) => {
 
 resetButton.addEventListener("click", () => {
     // Once clicked Resets background-color and images
-    glassImage.src = "images/white-mug.png";
-    overlay.style.backgroundColor = "transparent";
+    //glassImage.style.backgroundImage = "url('images/white-mug.png')";
+    //overlay.style.backgroundColor = "transparent";
     overlay.style.backgroundImage = "none"
 
     // Once clicked resets the cup's text
@@ -164,13 +253,39 @@ resetButton.addEventListener("click", () => {
 
 });
 
+const cupImages = [
+    "images/white-mug.png",
+    "images/black-mug.png",
+    "images/small-glass.jpg",
+    "images/clear-glass.jpg"
+]
+
+let currentCupIndex = 0;
+
 // Swap buttons
-swapCup.addEventListener("click", () => {
-    glassImage.src = "images/white-mug.png";
+// swapCup.addEventListener("click", () => {
+//     glassImage.src = ;
+//     overlay.style.backgroundColor = "transparent";
+// });
+
+// swapGlass.addEventListener("click", () => {
+//     glassImage.src = ;
+//     overlay.style.backgroundColor = "transparent";
+// });
+
+// prev button / next button
+prevCupButton.addEventListener("click", () => {
+    currentCupIndex = (currentCupIndex - 1 + cupImages.length) % cupImages.length;
+    glassImage.src = cupImages=[currentCupIndex];
+
     overlay.style.backgroundColor = "transparent";
+    overlay.style.backgroundImage = "none";
 });
 
-swapGlass.addEventListener("click", () => {
-    glassImage.src = "images/black-mug.png";
+nextCupButton.addEventListener("click", () => {
+    currentCupIndex = (currentCupIndex + 1) % cupImages.length;
+    glassImage.src = cupImages[currentCupIndex];
+
     overlay.style.backgroundColor = "transparent";
+    overlay.style.backgroundImage = "none";
 });

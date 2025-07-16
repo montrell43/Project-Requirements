@@ -19,8 +19,9 @@
         </div> -->
 
         <div class="cup-container" id="cup">
+            <!-- <div id="glassImage"></div> -->
             <img src="images/white-mug.png" alt="Glass" id="glassImage">
-            <div class="overlay" id="overlay"></div>
+            <div class="design-wrap" id="overlay"></div>
             <div class="sticker-layer" id="stickerLayer"></div>
             <p id="cupText">Your Text</p>
         </div>
@@ -37,10 +38,10 @@
         <!-- for stickers -->
         <label>Add Stickers</label>
         <div id="stickerContainer">
-            <button class="sticker"><i class ="fas fa-mug-hot"></i></button>
-            <button class="sticker"><i class ="fas fa-star"></i></button>
-            <button class="sticker"><i class ="fas fa-heart"></i></button>
-            <button class="sticker"><i class ="fas fa-smile-wink"></i></button>
+            <button class="sticker blue-icon"><i class ="fas fa-mug-hot" style="color: blue; background-color:bisque"></i></button>
+            <button class="sticker"><i class ="fas fa-star" style="color: yellow;"></i></button>
+            <button class="sticker"><i class ="fas fa-heart" style="color: red;"></i></button>
+            <button class="sticker"><i class ="fas fa-smile-wink" style="color: gold; background-color:black"></i></button>
         </div>
     </div>
         <!-- the handling for the images input and selectors -->
@@ -49,8 +50,8 @@
             <input type="text" id="searchInput" placeholder="wine glass, tumblers, mug etc..">
             <div id="imageResults" class="image-grid"></div>
 
-            <button id="swapCup">Swap To Cup</button>
-            <button id="swapGlass">Swap To Glass</button>
+            <button id="prevCup">Previous</button>
+            <button id="nextCup">Next</button>
     <script src="apiKey.js"></script>
     <script src="script.js"></script>
 </body>
