@@ -109,18 +109,19 @@ stickersButtons.forEach(button => {
 
             // This tells where the cup is sitting on the screen
             const cupRect = cup.getBoundingClientRect();
-            const iconRect = icon.getBoundingClientRect();
+            const textRect = cupText.getBoundingClientRect();
             // Once mouse is clicked absolute on the screen with clientX and clientY
             // icon.getBoundingClientRect allows me to know where is the sticker on the screen
             // shiftX and shiftY is to prevent the sticker from jumping to it's original placing to top-left of screen when I drag and shows how far inside the the sticker the mouse has clicked
-            const shiftX = event.clientX - iconRect.left;
-            const shiftY = event.clientY - iconRect.top;
+            const shiftX = event.clientX - textRect.left;
+            const shiftY = event.clientY - textRect.top;
 
 
             // this function allows the mouseAt to calculate where to place the sticker that it follows the mouse  and moves X relative to cup   
             function moveAt(pageX, pageY) {
-                icon.style.left = `${pageX - cupRect.left - shiftX}px`;
-                icon.style.top = `${pageY - cupRect.top - shiftY}px`;
+                cupText.style.left = `${pageX - cupRect.left - shiftX}px`;
+                cupText.style.top = `${pageY - cupRect.top - shiftY}px`;
+                cupText.style.position = "absolute";
             }
 
             function onMouseMove(event) {
@@ -137,55 +138,7 @@ stickersButtons.forEach(button => {
         });
 
 
-// Able to place images where want to on cup
-imgElement.addEventListener("click", () => {
-// creating an new <img> element and add it to stickerLayer
-        const image = document.createElement('img');
-        image.src = img.urls.small;
-        image.className = "draggable-image";
-        image.style.position = "absolute";
 
-        // Making an random position inside the cup
-        image.style.top = "40%";
-        image.style.left = "40%";
-        image.style.cursor = "grab";
-         // Adding new image to the cup
-        stickerLayer.appendChild(image);
-
-        // Adds the grab and dragging functionality to cursor pointer
-        image.addEventListener('mousedown', (event) => {
-            event.preventDefault();
-
-            // This tells where the cup is sitting on the screen
-            const cupRect = cup.getBoundingClientRect();
-            const imageRect = image.getBoundingClientRect();
-            // Once mouse is clicked absolute on the screen with clientX and clientY
-            // image.getBoundingClientRect allows me to know where is the sticker on the screen
-            // shiftX and shiftY is to prevent the sticker from jumping to it's original placing to top-left of screen when I drag and shows how far inside the the sticker the mouse has clicked
-            const shiftX = event.clientX - imageRect.left;
-            const shiftY = event.clientY - imageRect.top;
-
-
-            // this function allows the mouseAt to calculate where to place the sticker that it follows the mouse  and moves X relative to cup   
-            function moveAt(pageX, pageY) {
-                image.style.left = `${pageX - cupRect.left - shiftX}px`;
-                image.style.top = `${pageY - cupRect.top - shiftY}px`;
-            }
-
-            function onMouseMove(event) {
-                moveAt(event.pageX, event.pageY);
-            }
-
-            // the addEventListener mousemove updates the position
-            document.addEventListener("mousemove", onMouseMove);
-
-            // the addEventListener mouseup stops the dragging point of the sticker upon mouse
-            document.addEventListener("mouseup", () => {
-                document.removeEventListener('mousemove', onMouseMove);
-            }, { once: true});
-        });
-
-    })
 
 
 function displayImages(images) {
@@ -202,6 +155,13 @@ function displayImages(images) {
         imgElement.src = img.urls.small;
         imgElement.alt = img.alt_description;
         imgElement.style.cursor = 'pointer';
+        imgElement.style.width ="150px";
+        imgElement.style.margin = "10px";
+        imgElement.style.borderRadius = "8px";
+        imgElement.style.transition = "transform 0.2s";
+
+        imgElement.addEventListener("mouseenter", () => imgElement.style.transform = "scale(1.05)");
+        imgElement.addEventListener("mouseleave", () => imgElement.style.transform = "scale(1)")
 
         imgElement.addEventListener("click", () => {
 
@@ -209,9 +169,46 @@ function displayImages(images) {
             overlay.style.backgroundSize = "45% auto"; // covers the glass fully
             overlay.style.backgroundRepeat = "no-repeat"; // to make sure the images do not show multiple same images
             overlay.style.backgroundPosition = "center center"; // center the images presented
-            //overlay.style.backgroundColor = "transparent"; // removes overlay on real glasses
+            overlay.style.backgroundColor = "transparent"; // removes overlay on real glasses
             //glassImage.src = "images/white-mug.png";
-        });
+
+
+        // Able to place images where want to on cup and draggable with overlay 
+        // Adds the grab and dragging functionality to cursor pointer
+        overlay.onmousedown = (event) => {
+            event.preventDefault();
+
+            // This tells where the cup is sitting on the screen
+            const cupRect = cup.getBoundingClientRect();
+            const overlayRect = overlay.getBoundingClientRect();
+            // Once mouse is clicked absolute on the screen with clientX and clientY
+            // image.getBoundingClientRect allows me to know where is the sticker on the screen
+            // shiftX and shiftY is to prevent the sticker from jumping to it's original placing to top-left of screen when I drag and shows how far inside the the sticker the mouse has clicked
+            const shiftX = event.clientX - overlayRect.left;
+            const shiftY = event.clientY - overlayRect.top;
+
+
+            // this function allows the mouseAt to calculate where to place the sticker that it follows the mouse  and moves X relative to cup   
+            function moveAt(pageX, pageY) {
+                overlay.style.left = `${pageX - cupRect.left - shiftX}px`;
+                overlay.style.top = `${pageY - cupRect.top - shiftY}px`;
+                overlay.style.position = "absolute";
+            }
+
+            function onMouseMove(event) {
+                moveAt(event.pageX, event.pageY);
+            }
+
+            // the addEventListener mousemove updates the position
+            document.addEventListener("mousemove", onMouseMove);
+
+            // the addEventListener mouseup stops the dragging point of the sticker upon mouse
+            document.addEventListener("mouseup", () => {
+                document.removeEventListener('mousemove', onMouseMove);
+            }, { once: true});
+        }
+    });
+
         imageContainer.appendChild(imgElement);
     })
 }
@@ -276,16 +273,10 @@ let currentCupIndex = 0;
 // prev button / next button
 prevCupButton.addEventListener("click", () => {
     currentCupIndex = (currentCupIndex - 1 + cupImages.length) % cupImages.length;
-    glassImage.src = cupImages=[currentCupIndex];
-
-    overlay.style.backgroundColor = "transparent";
-    overlay.style.backgroundImage = "none";
+    glassImage.src = cupImages[currentCupIndex];
 });
 
 nextCupButton.addEventListener("click", () => {
     currentCupIndex = (currentCupIndex + 1) % cupImages.length;
     glassImage.src = cupImages[currentCupIndex];
-
-    overlay.style.backgroundColor = "transparent";
-    overlay.style.backgroundImage = "none";
 });
