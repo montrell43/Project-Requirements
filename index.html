@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cup Designer App</title>
-    <link rel="stylesheet" href="style.css">
+    
     <!-- Font Awesome CDN -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"  rel="stylesheet" crossorigin="anonymous">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Cup Designer</h1>
@@ -32,16 +33,16 @@
 
             <label for="textInput">Add Custom Text:</label>
             <input type="text" id="textInput" placeholder="Input your message">
-            <button id="resetButton">Reset Cup</button>
+            <button id="resetButton" class="btn btn-outline-dark">Reset Cup</button>
         </div>
 
         <!-- for stickers -->
         <label>Add Stickers</label>
         <div id="stickerContainer">
-            <button class="sticker blue-icon"><i class ="fas fa-mug-hot" style="color: blue; background-color:bisque"></i></button>
-            <button class="sticker"><i class ="fas fa-star" style="color: yellow;"></i></button>
-            <button class="sticker"><i class ="fas fa-heart" style="color: red;"></i></button>
-            <button class="sticker"><i class ="fas fa-smile-wink" style="color: gold; background-color:black"></i></button>
+            <button class="sticker blue-icon"><i class ="fas fa-mug-hot" style="color: blue; font-size: 33px;"></i></button>
+            <button class="sticker"><i class ="fas fa-star" style="color: yellow; background-color:black; font-size: 33px;"></i></button>
+            <button class="sticker"><i class ="fas fa-heart" style="color: red; background-color:black; font-size: 33px;"></i></button>
+            <button class="sticker"><i class ="fas fa-smile-wink" style="color: gold; background-color:black; font-size: 33px;"></i></button>
         </div>
     </div>
         <!-- the handling for the images input and selectors -->
@@ -50,9 +51,13 @@
             <input type="text" id="searchInput" placeholder="wine glass, tumblers, mug etc..">
             <div id="imageResults" class="image-grid"></div>
 
-            <button id="prevCup">Previous</button>
-            <button id="nextCup">Next</button>
+            <button type="button" id="prevCup" class="btn btn-outline-primary">Previous</button>
+            <button type="button" id="nextCup" class="btn btn-outline-primary">Next</button>
+            <button id="downloadButton" class="btn btn-outline-info">Download Design</button>
     <script src="apiKey.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-Q4gnHOf+W32ujEglpLzICjYkkm2AOvm0FvWUzpt8hvAcbUswfu27FZIdylrV1I7X" crossorigin="anonymous"></script>
+
 </body>
 </html>
