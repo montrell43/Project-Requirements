@@ -166,7 +166,7 @@ function displayImages(images) {
         // styling for interactivity with hover effect
         imgElement.style.cursor = 'pointer';
         imgElement.style.width ="150px";
-        imgElement.style.margin = "10px";
+        //imgElement.style.margin = "10px";
         imgElement.style.borderRadius = "8px";
         imgElement.style.transition = "transform 0.2s";
 
